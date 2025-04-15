@@ -1,5 +1,4 @@
 import requests
-import zipfile
 import gzip
 import pandas as pd
 import os
