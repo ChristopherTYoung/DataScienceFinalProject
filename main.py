@@ -10,9 +10,9 @@ file_name = "draft.csv"
 file_path = f"./{file_name}"
 url = "https://17lands-public.s3.amazonaws.com/analysis_data/draft_data/draft_data_public.FDN.PremierDraft.csv.gz"
 
-response = requests.get(url)
 
 if not os.path.exists(file_path):
+    response = requests.get(url)
     print("Fetching data")
     with open("draft_data_public.FDN.PremierDraft.csv.gz", mode="wb") as file:
         file.write(response.content)
