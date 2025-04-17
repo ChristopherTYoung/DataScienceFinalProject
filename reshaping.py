@@ -7,6 +7,7 @@ pack_number_we_want = 0
 data_csv_title = "draft.csv"
 
 chunk_size = 10000
+total_chunks = 100
 
 chunks = []
 
@@ -45,8 +46,8 @@ df = pd.concat(chunks, ignore_index=True)
 
 card_columns = [col for col in df.columns if col.startswith("pack_card_")]
 
-df_pick0 = df[df["pick_number"] == 0].copy()
-df_pick8 = df[df["pick_number"] == 8].copy()
+df_pick0 = df[(df["pick_number"] == 0) & (df["pack_number"] == 0)].copy()
+df_pick8 = df[(df["pick_number"] == 8) & (df["pack_number"] == 0)].copy()
 
 df_pick0["player_idx"] = df_pick0.groupby("draft_id").cumcount()
 df_pick8["player_idx"] = df_pick8.groupby("draft_id").cumcount()
