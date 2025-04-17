@@ -11,9 +11,9 @@ file_path = f"./{file_name}"
 mtg_set = "FDN"
 url = f"https://17lands-public.s3.amazonaws.com/analysis_data/draft_data/draft_data_public.{mtg_set}.PremierDraft.csv.gz"
 
-response = requests.get(url)
 
 if not os.path.exists(file_path):
+    response = requests.get(url)
     print("Fetching data")
     with open(f"draft_data_public.{mtg_set}.PremierDraft.csv.gz", mode="wb") as file:
         file.write(response.content)
