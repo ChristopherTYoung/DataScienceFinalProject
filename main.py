@@ -1,4 +1,4 @@
-from constants import columns_to_use
+from utils import get_necessary_col_names_from_csv
 import matplotlib.pyplot as plt
 import pandas as pd
 import requests
@@ -8,23 +8,22 @@ import os
 # change path
 file_name = "draft.csv"
 file_path = f"./{file_name}"
-url = "https://17lands-public.s3.amazonaws.com/analysis_data/draft_data/draft_data_public.FDN.PremierDraft.csv.gz"
+mtg_set = "FDN"
+url = f"https://17lands-public.s3.amazonaws.com/analysis_data/draft_data/draft_data_public.{mtg_set}.PremierDraft.csv.gz"
 
 response = requests.get(url)
 
 if not os.path.exists(file_path):
     print("Fetching data")
-    with open("draft_data_public.FDN.PremierDraft.csv.gz", mode="wb") as file:
+    with open(f"draft_data_public.{mtg_set}.PremierDraft.csv.gz", mode="wb") as file:
         file.write(response.content)
 
-    with gzip.open("draft_data_public.FDN.PremierDraft.csv.gz", "rb") as f:
+    with gzip.open(f"draft_data_public.{mtg_set}.PremierDraft.csv.gz", "rb") as f:
         file_content = f.read()
         with open("draft.csv", "wb") as f_out:
             f_out.write(file_content)
 else:
     print("draft.csv already exists")
-
-# Clean data here ?
 
 chunk_size = 10000
 total_chunks = 100
@@ -32,6 +31,7 @@ total_number_of_rows = chunk_size * total_chunks
 number_of_rows_processed = 0
 
 chunks = []
+columns_to_use = get_necessary_col_names_from_csv(file_name)
 
 for chunk in pd.read_csv(
     file_name,
@@ -84,7 +84,9 @@ for card in card_column_names:
     card_col_early = card + pick_suffix[0]
     card_col_wheeled = card + pick_suffix[1]
 
-    relevant_rows_for_cards = df_of_early_and_wheeled_picks[df_of_early_and_wheeled_picks[card_col_early] >= 1]
+    relevant_rows_for_cards = df_of_early_and_wheeled_picks[
+        df_of_early_and_wheeled_picks[card_col_early] >= 1
+    ]
 
     wheeled_count = (relevant_rows_for_cards[card_col_wheeled] >= 1).sum()
 
