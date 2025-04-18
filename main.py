@@ -1,4 +1,6 @@
 from utils import get_necessary_col_names_from_csv
+from constants import columns_to_use
+from cleaning import clean_nulls_care, remove_incomplete
 import matplotlib.pyplot as plt
 import pandas as pd
 import requests
@@ -34,7 +36,7 @@ columns_to_use = get_necessary_col_names_from_csv(file_name)
 for chunk in pd.read_csv(
     file_name,
     usecols=columns_to_use,
-    chunksize=chunk_size,
+    chunksize=chunk_size
 ):
     number_of_rows_processed += chunk_size
     print(
@@ -47,7 +49,9 @@ for chunk in pd.read_csv(
 
 df = pd.concat(chunks, ignore_index=True)
 
-# Clean data here ?
+df = clean_nulls_care(df)
+df = remove_incomplete(df, columns_to_use)
+df = df.drop_duplicates(["draft_id", 'pack_number', 'pick_number'])
 
 card_column_names = [col for col in df.columns if col.startswith("pack_card_")]
 
