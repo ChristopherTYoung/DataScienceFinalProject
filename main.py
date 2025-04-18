@@ -5,12 +5,10 @@ import requests
 import gzip
 import os
 
-# change path
 file_name = "draft.csv"
 file_path = f"./{file_name}"
 mtg_set = "FDN"
 url = f"https://17lands-public.s3.amazonaws.com/analysis_data/draft_data/draft_data_public.{mtg_set}.PremierDraft.csv.gz"
-
 
 if not os.path.exists(file_path):
     response = requests.get(url)
@@ -42,7 +40,7 @@ for chunk in pd.read_csv(
     print(
         f"processed (another) {number_of_rows_processed} rows out of {total_number_of_rows}"
     )
-    filtered_chunk = chunk[chunk["pick_number"] != 7]
+    filtered_chunk = chunk[chunk["pick_number"] != 6 and chunk["pick_number"] != 7]
     chunks.append(filtered_chunk)
     if number_of_rows_processed >= total_number_of_rows:
         break
@@ -104,6 +102,3 @@ plt.title("Percent Wheeled by Card")
 plt.xticks(rotation=45, ha="right")
 plt.tight_layout()
 plt.show()
-
-print(df.head())
-print(df.describe())
