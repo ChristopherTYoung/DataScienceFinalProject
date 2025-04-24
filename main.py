@@ -1,6 +1,7 @@
 from utils import get_necessary_col_names_from_csv
-from constants import columns_to_use
+# from constants import columns_to_use
 from cleaning import clean_nulls_care, remove_incomplete
+from mtgsdk import Card
 import matplotlib.pyplot as plt
 import pandas as pd
 import requests
@@ -24,6 +25,7 @@ if not os.path.exists(file_path):
             f_out.write(file_content)
 else:
     print("draft.csv already exists")
+
 
 chunk_size = 10000
 total_chunks = 100
@@ -52,6 +54,20 @@ df = pd.concat(chunks, ignore_index=True)
 df = clean_nulls_care(df)
 df = remove_incomplete(df, columns_to_use)
 df = df.drop_duplicates(["draft_id", 'pack_number', 'pick_number'])
+
+card_data_file_path = "./card_data.csv"
+card_data_url = ""
+if not os.path.exists(card_data_file_path):
+    fdn = list(filter(lambda c: df["pick"].__contains__(c.name), Card.all()))
+    print("Fetching card data")
+
+    with open("card_data.csv", mode="wb") as file:
+        file.write(bytes(fdn))
+else:
+    print(f"{card_data_file_path} already exists")
+
+# add color and rarity
+df['color'] = Card.where()
 
 card_column_names = [col for col in df.columns if col.startswith("pack_card_")]
 
