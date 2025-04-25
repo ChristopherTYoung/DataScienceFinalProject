@@ -1,10 +1,11 @@
 from utils import get_necessary_col_names_from_csv
-from constants import columns_to_use
+# from constants import columns_to_use
 from cleaning import clean_nulls_care, remove_incomplete
 from mtgsdk import Card
 import matplotlib.pyplot as plt
 import pandas as pd
 import requests
+import csv
 import gzip
 import os
 
@@ -26,6 +27,21 @@ if not os.path.exists(file_path):
 else:
     print("draft.csv already exists")
 
+card_data_file_path = "./card_data.csv"
+card_data_url = "https://api.scryfall.com/cards/search?q=set:fdn"
+if not os.path.exists(card_data_file_path):
+    response = requests.get(card_data_url)
+    cards = response.json()["data"]
+    print("Fetching card data")
+    fields = ["name", "mana_cost", "colors", "color_identity", "rarity"]
+
+    with open("card_data.csv", mode="w", encoding="utf-8", newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=fields)
+        writer.writeheader()
+        for card in cards:
+            writer.writerow({field: card.get(field, "") for field in fields})
+else:
+    print(f"{card_data_file_path} already exists")
 
 chunk_size = 10000
 total_chunks = 100
@@ -55,16 +71,6 @@ df = clean_nulls_care(df)
 df = remove_incomplete(df, columns_to_use)
 df = df.drop_duplicates(["draft_id", 'pack_number', 'pick_number'])
 
-card_data_file_path = "./card_data.csv"
-card_data_url = ""
-if not os.path.exists(card_data_file_path):
-    fdn = list(filter(lambda c: df["pick"].__contains__(c.name), Card.all()))
-    print("Fetching card data")
-
-    with open("card_data.csv", mode="wb") as file:
-        file.write(bytes(fdn))
-else:
-    print(f"{card_data_file_path} already exists")
 
 # add color and rarity
 df['color'] = Card.where()
