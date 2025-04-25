@@ -1,5 +1,5 @@
 from utils import get_necessary_col_names_from_csv
-# from constants import columns_to_use
+from constants import columns_to_use
 from cleaning import clean_nulls_care, remove_incomplete
 from mtgsdk import Card
 import matplotlib.pyplot as plt
