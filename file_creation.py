@@ -98,7 +98,7 @@ def add_card_statistics_to_card_data():
         "number of cards from the table (rows):",
         len(card_wr_df),
         "therefore there will be",
-        num_wr_cols - len(card_df),
+        len(card_df) - num_wr_cols,
         "insignificant cards",
     )  # 281 for FDN
 
