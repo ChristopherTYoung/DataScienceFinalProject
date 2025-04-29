@@ -21,3 +21,17 @@
 There are some cards (FND has 236) that are 'Underrepresented'
 This means that we do not have enough data to create the stats wanted for specific cards.
 To put this in perspective, FND has 500+ cards in the set, but only about 280 cards have enough data to create the stats we want
+
+# Requirements
+
+### Acquire data using web scraping or APIs
+
+We have three examples of this.
+We scrape (https://www.17lands.com/public_datasets)[https://www.17lands.com/public_datasets]
+We scrape the same website, but different page and data here (https://www.17lands.com/card_data?expansion=FDN&format=PremierDraft&view=table&start=2024-11-12)[https://www.17lands.com/card_data?expansion=FDN&format=PremierDraft&view=table&start=2024-11-12]
+
+We are allowed to do this through their license: (https://creativecommons.org/licenses/by/4.0/)[https://creativecommons.org/licenses/by/4.0/]
+
+We also scraping Scryfall's Api: (https://scryfall.com/)[https://scryfall.com/]
+
+We are allowed to do this through their license: ()[]

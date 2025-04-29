@@ -28,4 +28,4 @@ draft_df = draft_duplicates_df.drop_duplicates(
 
 print(draft_df.head())
 
-# card_column_names = [col for col in draft_df.columns if col.startswith("pack_card_")]
+card_column_names = [col for col in draft_df.columns if col.startswith("pack_card_")]
