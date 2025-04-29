@@ -9,4 +9,5 @@ def get_necessary_col_names_from_csv(file_name: str) -> List[str]:
         "draft_id",
         "pack_number",
         "pick_number",
+        "pick"
     ]
