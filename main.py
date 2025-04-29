@@ -84,7 +84,6 @@ df = clean_nulls_care(df, columns_to_use)
 df = remove_incomplete(df)
 df = df.drop_duplicates(["draft_id", "pack_number", "pick_number"])
 
-
 # add color and rarity
 df["color"] = Card.where()
 
