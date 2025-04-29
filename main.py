@@ -36,16 +36,25 @@ else:
     print("draft.csv already exists")
 
 if not os.path.exists(card_data_file_path):
-    response = requests.get(card_data_url)
-    cards = response.json()["data"]
-    print("Fetching card data")
+    print("Fetching card data...")
     fields = ["name", "mana_cost", "colors", "color_identity", "rarity"]
 
     with open(card_data_file_name, mode="w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
-        for card in cards:
-            writer.writerow({field: card.get(field, "") for field in fields})
+
+        # Fetching all the pages of card data
+        # The Scryfall API returns paginated results, so we need to loop through the pages
+        next_url = card_data_url
+        while next_url:
+            response = requests.get(next_url)
+            data = response.json()
+            cards = data["data"]
+
+            for card in cards:
+                writer.writerow({field: card.get(field, "") for field in fields})
+
+            next_url = data.get("next_page") if data.get("has_more") else None
 else:
     print(f"{card_data_file_path} already exists")
 
