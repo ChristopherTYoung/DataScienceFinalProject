@@ -9,33 +9,37 @@ import csv
 import gzip
 import os
 
-file_name = "draft.csv"
-file_path = f"./{file_name}"
-mtg_set = "FDN"
-url = f"https://17lands-public.s3.amazonaws.com/analysis_data/draft_data/draft_data_public.{mtg_set}.PremierDraft.csv.gz"
+draft_data_file_name = "draft.csv"
+draft_data_file_path = f"./{draft_data_file_name}"
+card_data_file_name = "card_data.csv"
+card_data_file_path = f"./{card_data_file_name}"
 
-if not os.path.exists(file_path):
-    response = requests.get(url)
+mtg_set = "FDN"
+mtg_set_for_card_data = mtg_set.lower()
+
+draft_url = f"https://17lands-public.s3.amazonaws.com/analysis_data/draft_data/draft_data_public.{mtg_set}.PremierDraft.csv.gz"
+card_data_url = f"https://api.scryfall.com/cards/search?q=set:{mtg_set_for_card_data}"
+
+if not os.path.exists(draft_data_file_path):
+    response = requests.get(draft_url)
     print("Fetching data")
     with open(f"draft_data_public.{mtg_set}.PremierDraft.csv.gz", mode="wb") as file:
         file.write(response.content)
 
     with gzip.open(f"draft_data_public.{mtg_set}.PremierDraft.csv.gz", "rb") as f:
         file_content = f.read()
-        with open("draft.csv", "wb") as f_out:
+        with open(draft_data_file_name, "wb") as f_out:
             f_out.write(file_content)
 else:
     print("draft.csv already exists")
 
-card_data_file_path = "./card_data.csv"
-card_data_url = "https://api.scryfall.com/cards/search?q=set:fdn"
 if not os.path.exists(card_data_file_path):
     response = requests.get(card_data_url)
     cards = response.json()["data"]
     print("Fetching card data")
     fields = ["name", "mana_cost", "colors", "color_identity", "rarity"]
 
-    with open("card_data.csv", mode="w", encoding="utf-8", newline='') as f:
+    with open(card_data_file_name, mode="w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
         for card in cards:
@@ -49,12 +53,10 @@ total_number_of_rows = chunk_size * total_chunks
 number_of_rows_processed = 0
 
 chunks = []
-columns_to_use = get_necessary_col_names_from_csv(file_name)
+columns_to_use = get_necessary_col_names_from_csv(draft_data_file_name)
 
 for chunk in pd.read_csv(
-    file_name,
-    usecols=columns_to_use,
-    chunksize=chunk_size
+    draft_data_file_name, usecols=columns_to_use, chunksize=chunk_size
 ):
     number_of_rows_processed += chunk_size
     print(
@@ -69,11 +71,11 @@ df = pd.concat(chunks, ignore_index=True)
 
 df = clean_nulls_care(df)
 df = remove_incomplete(df, columns_to_use)
-df = df.drop_duplicates(["draft_id", 'pack_number', 'pick_number'])
+df = df.drop_duplicates(["draft_id", "pack_number", "pick_number"])
 
 
 # add color and rarity
-df['color'] = Card.where()
+df["color"] = Card.where()
 
 card_column_names = [col for col in df.columns if col.startswith("pack_card_")]
 
