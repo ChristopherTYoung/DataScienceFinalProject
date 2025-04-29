@@ -1,5 +1,4 @@
 from utils import get_necessary_col_names_from_csv
-from constants import columns_to_use
 from cleaning import clean_nulls_care, remove_incomplete
 from mtgsdk import Card
 import matplotlib.pyplot as plt
@@ -8,6 +7,9 @@ import requests
 import csv
 import gzip
 import os
+
+# Install requirements
+# pip install -r requirements.txt
 
 draft_data_file_name = "draft.csv"
 draft_data_file_path = f"./{draft_data_file_name}"
@@ -62,15 +64,15 @@ for chunk in pd.read_csv(
     print(
         f"processed (another) {number_of_rows_processed} rows out of {total_number_of_rows}"
     )
-    filtered_chunk = chunk[chunk["pick_number"] != 6 and chunk["pick_number"] != 7]
+    filtered_chunk = chunk[(chunk["pick_number"] != 6) & (chunk["pick_number"] != 7)]
     chunks.append(filtered_chunk)
     if number_of_rows_processed >= total_number_of_rows:
         break
 
 df = pd.concat(chunks, ignore_index=True)
 
-df = clean_nulls_care(df)
-df = remove_incomplete(df, columns_to_use)
+df = clean_nulls_care(df, columns_to_use)
+df = remove_incomplete(df)
 df = df.drop_duplicates(["draft_id", "pack_number", "pick_number"])
 
 
