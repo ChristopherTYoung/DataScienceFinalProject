@@ -1,6 +1,5 @@
 from utils import get_necessary_col_names_from_csv
 from cleaning import clean_nulls_care, remove_incomplete
-from mtgsdk import Card
 import matplotlib.pyplot as plt
 import pandas as pd
 import requests
@@ -15,6 +14,8 @@ draft_data_file_name = "draft.csv"
 draft_data_file_path = f"./{draft_data_file_name}"
 card_data_file_name = "card_data.csv"
 card_data_file_path = f"./{card_data_file_name}"
+card_wr_file_name = "card_wr.csv"
+card_wr_file_path = f"./{card_wr_file_name}"
 
 mtg_set = "FDN"
 mtg_set_for_card_data = mtg_set.lower()
@@ -78,16 +79,16 @@ for chunk in pd.read_csv(
     if number_of_rows_processed >= total_number_of_rows:
         break
 
-df = pd.concat(chunks, ignore_index=True)
+draft_df = pd.concat(chunks, ignore_index=True)
 
-df = clean_nulls_care(df, columns_to_use)
-df = remove_incomplete(df)
-df = df.drop_duplicates(["draft_id", "pack_number", "pick_number"])
+draft_df = clean_nulls_care(draft_df, columns_to_use)
+draft_df = remove_incomplete(draft_df)
+draft_df = draft_df.drop_duplicates(["draft_id", "pack_number", "pick_number"])
 
 # add color and rarity
-df["color"] = Card.where()
+# draft_df["color"] = Card.where()
 
-card_column_names = [col for col in df.columns if col.startswith("pack_card_")]
+card_column_names = [col for col in draft_df.columns if col.startswith("pack_card_")]
 
 pack_number = 0
 early_pick_number = 0
@@ -98,11 +99,13 @@ pick_suffix = (
     f"_{pack_number}_{wheeled_pick_number}",
 )
 
-df_early_pick_number = df[
-    (df["pick_number"] == early_pick_number) & (df["pack_number"] == pack_number)
+df_early_pick_number = draft_df[
+    (draft_df["pick_number"] == early_pick_number)
+    & (draft_df["pack_number"] == pack_number)
 ].copy()
-df_wheeled_pick_number = df[
-    (df["pick_number"] == wheeled_pick_number) & (df["pack_number"] == pack_number)
+df_wheeled_pick_number = draft_df[
+    (draft_df["pick_number"] == wheeled_pick_number)
+    & (draft_df["pack_number"] == pack_number)
 ].copy()
 
 df_early_pick_number[player_index] = df_early_pick_number.groupby("draft_id").cumcount()
