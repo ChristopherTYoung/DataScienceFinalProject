@@ -49,4 +49,4 @@ columns_to_add = [
 compact(df)
 newdf = compile_cards(df, card_data, columns_to_add, 0)
 print(newdf.head())
-print(df[['user_id', 'cards_in_pack']])
+print(df[["user_id", "cards_in_pack"]])

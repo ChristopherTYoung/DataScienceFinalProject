@@ -1,2 +1,4 @@
 matplotlib==3.10.1
 pandas==2.2.3
+selenium==4.31.0
+html5lib==1.1
