@@ -129,7 +129,7 @@ def add_card_statistics_to_card_data():
 
     merged_df = pd.merge(card_df, card_wr_df, on="name", how="left")
 
-    merged_df.to_csv(draft_data_file_name, index=False)
+    merged_df.to_csv(card_data_file_name, index=False)
 
 
 def mana_cost_to_value(mana_cost: str) -> int:
