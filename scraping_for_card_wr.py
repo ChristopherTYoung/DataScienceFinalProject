@@ -1,5 +1,5 @@
-from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
 import pandas as pd
 import time
 
@@ -26,7 +26,7 @@ card_wr_df.columns = [col.strip() for col in card_wr_df.columns]
 
 # Extract only the necessary columns
 card_wr_df = card_wr_df[
-    [col for col in card_wr_df.columns if col not in ["color", "rarity"]]
+    [col for col in card_wr_df.columns if col not in ["color", "rarity", "IWD"]]
 ]
 card_wr_df.rename(columns={"Name": "name"}, inplace=True)
 num_wr_cols = len(card_wr_df)
@@ -45,7 +45,6 @@ card_wr_df[percent_cols] = card_wr_df[percent_cols].apply(
     lambda x: x.str.rstrip("%").astype(float)
 )
 
-# Standardize the card names to lowercase for consistent merging
 card_wr_df["name"] = card_wr_df["name"].str.lower()
 card_df["name"] = card_df["name"].str.lower()
 
