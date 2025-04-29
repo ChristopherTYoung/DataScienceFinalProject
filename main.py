@@ -1,5 +1,6 @@
 from utils import get_necessary_col_names_from_csv
 from cleaning import clean_nulls_care, remove_incomplete
+from merge import add_card_data
 import matplotlib.pyplot as plt
 import pandas as pd
 import requests
@@ -81,15 +82,21 @@ for chunk in pd.read_csv(
 
 draft_df = pd.concat(chunks, ignore_index=True)
 
-draft_df = clean_nulls_care(draft_df, columns_to_use)
-draft_df = remove_incomplete(draft_df)
-draft_df = draft_df.drop_duplicates(["draft_id", "pack_number", "pick_number"])
+
+
+card_data = pd.read_csv("card_data.csv")
+df = clean_nulls_care(df, columns_to_use)
+df = remove_incomplete(df)
+df = add_card_data(df, card_data)
+df = df.drop_duplicates(["draft_id", "pack_number", "pick_number"])
+
+print(df.head())
+
 
 
 # add color and rarity
-# draft_df["color"] = Card.where()
 
-card_column_names = [col for col in draft_df.columns if col.startswith("pack_card_")]
+card_column_names = [col for col in df.columns if col.startswith("pack_card_")]
 
 pack_number = 0
 early_pick_number = 0
