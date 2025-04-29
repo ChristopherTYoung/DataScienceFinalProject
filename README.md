@@ -31,7 +31,9 @@ We scrape (https://www.17lands.com/public_datasets)[https://www.17lands.com/publ
 We scrape the same website, but different page and data here (https://www.17lands.com/card_data?expansion=FDN&format=PremierDraft&view=table&start=2024-11-12)[https://www.17lands.com/card_data?expansion=FDN&format=PremierDraft&view=table&start=2024-11-12]
 
 We are allowed to do this through their license: (https://creativecommons.org/licenses/by/4.0/)[https://creativecommons.org/licenses/by/4.0/]
+You can find that on the first link listed, the one where we find our public datasets
 
 We also scraping Scryfall's Api: (https://scryfall.com/)[https://scryfall.com/]
 
-We are allowed to do this through their license: ()[]
+We are allowed to do this through the Wizards of the coast policy: (https://company.wizards.com/en/legal/fancontentpolicy)[https://company.wizards.com/en/legal/fancontentpolicy]
+You can find that here on Scryfall: (https://scryfall.com/docs/api)[https://scryfall.com/docs/api]
