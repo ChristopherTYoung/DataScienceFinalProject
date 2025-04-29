@@ -94,7 +94,6 @@ print(df.head())
 
 
 
-
 # add color and rarity
 
 card_column_names = [col for col in df.columns if col.startswith("pack_card_")]
