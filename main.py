@@ -87,6 +87,6 @@ draft_df = draft_duplicates_df.drop_duplicates(
 )
 df = add_card_data(draft_df, card_data)
 
-print(df.head())
+print(draft_df.head())
 
 # card_column_names = [col for col in draft_df.columns if col.startswith("pack_card_")]
