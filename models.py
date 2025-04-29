@@ -15,3 +15,7 @@ def win_rate_per_color(card_data):
     avg_per_color = card_data.groupby("color_identity")["GD WR"].mean()
     avg_per_color.plot(kind="bar")
     plt.show()
+
+def ata_vs_mana_cost(card_data):
+    sns.scatterplot(x="mana_cost", y="ATA", data=card_data, hue="color_identity")
+    plt.show()
