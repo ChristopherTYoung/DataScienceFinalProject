@@ -85,18 +85,14 @@ draft_df = pd.concat(chunks, ignore_index=True)
 
 
 card_data = pd.read_csv("card_data.csv")
-df = clean_nulls_care(df, columns_to_use)
-df = remove_incomplete(df)
-df = add_card_data(df, card_data)
-df = df.drop_duplicates(["draft_id", "pack_number", "pick_number"])
+draft_df = clean_nulls_care(draft_df, columns_to_use)
+draft_df = remove_incomplete(draft_df)
+draft_df = add_card_data(draft_df, card_data)
+draft_df = draft_df.drop_duplicates(["draft_id", "pack_number", "pick_number"])
 
-print(df.head())
+print(draft_df.head())
 
-
-
-# add color and rarity
-
-card_column_names = [col for col in df.columns if col.startswith("pack_card_")]
+card_column_names = [col for col in draft_df.columns if col.startswith("pack_card_")]
 
 pack_number = 0
 early_pick_number = 0
