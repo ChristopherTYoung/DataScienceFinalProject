@@ -24,7 +24,7 @@ To put this in perspective, FDN has 500+ cards in the set, but only about 280 ca
 
 # Requirements
 
-### Acquire data using web scraping or APIs
+## Acquire data using web scraping or APIs
 
 We have three examples of this.
 
@@ -117,3 +117,24 @@ if not os.path.exists(card_data_file_path):
 
                 next_url = data.get("next_page") if data.get("has_more") else None
 ```
+
+## Clean and reshape messy datasets
+
+Our data is from two sources, the links shown above.
+
+17Lands
+
+```
+The mission of 17Lands is to help the Magic: The Gathering community improve at limited. We aggregate and openly share data to help players understand their own performance, to generate insights that can only come from a larger communal pool of data, and to provide data-driven content.
+```
+
+In my own words, it is a public application that tracks self-signed up individuals with limited formats in MTG.
+I use it personally.
+
+We use 17 lands to get data from their public datasets. It contains a LOT of drafts and games from users who self-sign up.
+We also use it to collect statistics on cards. Instead of calculating win percentages, we scrape their website for the data they show to the public. This means we can focus our energy on how specific aspects of cards lead to cards 'wheeling'. We find out the 'wheeling' cards ourselves, using their data.
+
+Scryfall
+
+What 17Lands does not do is tell us the anatomy of the MTG card. Such as what color it is, what mana cost is it, what is every card in a given set. This is where Scryfall comes in.
+We hit their api to get card data in the form of json. We then parse that data and use that to say: out of these cards, which ones are white? Which ones are White and Black? Just Black... ect...
