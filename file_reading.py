@@ -4,8 +4,8 @@ from constants import draft_data_file_name
 
 
 def read_draft_data(columns_to_use: List[str]) -> pd.DataFrame:
-    chunk_size = 10000
-    total_chunks = 100
+    chunk_size = 100
+    total_chunks = 1
     total_number_of_rows = chunk_size * total_chunks
     number_of_rows_processed = 0
 
