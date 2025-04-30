@@ -2,7 +2,11 @@ from cleaning import clean_nulls_care, remove_incomplete
 from file_reading import read_draft_data, get_necessary_col_names_from_csv
 from constants import draft_data_file_name
 from merge import add_card_data
-from models import ata_vs_mana_cost
+from models import ( 
+    ata_vs_mana_cost,
+    win_rate_vs_ata,
+    gns_vs_ata
+)
 from compact import compact
 import pandas as pd
 from file_creation import (
@@ -37,5 +41,6 @@ print("compacted draft data")
 
 print(draft_df.head())
 # ata_vs_mana_cost(card_data)
+gns_vs_ata(card_data)
 
 # card_column_names = [col for col in draft_df.columns if col.startswith("pack_card_")]
