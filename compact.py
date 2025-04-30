@@ -41,13 +41,15 @@ card_data = pd.DataFrame({
     '# GNS': [10, 12, 8],
     'GNS WR': [48.0, 50.0, 45.0]
 })
+card_data.set_index('name')
 columns_to_add = [
     'name',
     'mana_cost',
     'color_identity',
-    'rarity'
+    'rarity',
+    'GIH WR'
 ]
 compact(df)
-newdf = compile_cards(df, card_data, columns_to_add, 0)
+newdf = compile_cards(df, card_data, columns_to_add, 0, columns_for_average=['GIH WR'])
 print(newdf.head())
 print(df[["user_id", "cards_in_pack"]])
