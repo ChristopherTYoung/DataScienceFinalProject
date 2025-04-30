@@ -15,7 +15,7 @@ def compact(df):
     df["cards_in_pack"] = df[pack_card_cols].apply(
         lambda row: sum(
             [
-                [col.replace("pack_card_", "")] * int(row[col])
+                [col.replace("pack_card_", "").lower()] * int(row[col])
                 for col in pack_card_cols
                 if row[col] > 0
             ],
