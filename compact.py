@@ -1,4 +1,16 @@
 def compact(df):
+    """
+    Compacts a DataFrame by transforming the 'pack_card_' columns into a list of card names for each row.
+    Drops the original 'pack_card_' columns and returns a modified DataFrame.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame with columns representing counts of various cards 
+                            in the packs (e.g., 'pack_card_A', 'pack_card_B').
+
+    Returns:
+        pd.DataFrame: A DataFrame where the 'cards_in_pack' column contains lists of card names 
+                      and the original 'pack_card_' columns are dropped.
+    """
     pack_card_cols = [col for col in df.columns if col.startswith('pack_card_')]
     df['cards_in_pack'] = df[pack_card_cols].apply(
     lambda row: sum([[col.replace('pack_card_', '')] * int(row[col]) for col in pack_card_cols if row[col] > 0], []),
@@ -43,7 +55,6 @@ card_data = pd.DataFrame({
 })
 card_data.set_index('name')
 columns_to_add = [
-    'name',
     'mana_cost',
     'color_identity',
     'rarity',

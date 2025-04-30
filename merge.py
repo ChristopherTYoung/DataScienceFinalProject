@@ -8,6 +8,8 @@ def add_card_data(df: pd.DataFrame, card_data: pd.DataFrame, columns_to_add: Lis
         raise KeyError("The 'name' column is missing in the first DataFrame.")
     if 'name' not in card_data.columns:
         raise KeyError("The 'name' column is missing in the second DataFrame.")
+    if 'name' not in columns_to_add:
+        columns_to_add += ['name']
     combined_df = df.merge(card_data[columns_to_add], 
                             on='name', 
                             how='left')

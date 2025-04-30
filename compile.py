@@ -29,12 +29,13 @@ def compile_cards(df: pd.DataFrame, card_data: pd.DataFrame, columns_to_add: Lis
             packs_without = df["cards_in_pack"][row].copy()
             packs_without.remove(newrow)
             packs_without = pd.DataFrame({'name': packs_without})
-            packs_without = add_card_data(packs_without, card_data, ['name'] + columns_for_average)
+            packs_without = add_card_data(packs_without, card_data, columns_for_average)
             
             for col in columns_for_average:
                 avg_col_name = col + '_avg'
                 if avg_col_name not in newdf.columns:
                     newdf[avg_col_name] = None
-                
+                packs_without[col] = pd.to_numeric(packs_without[col], errors='coerce')
+
                 newdf.at[newrow, avg_col_name] = packs_without[col].mean()
     return newdf
