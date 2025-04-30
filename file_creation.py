@@ -39,7 +39,7 @@ def create_draft_data_if_not_exists():
 def create_card_data_if_not_exists():
     if not os.path.exists(card_data_file_path):
         print("Fetching card data...")
-        fields = ["name", "mana_cost", "colors", "color_identity", "rarity"]
+        fields = ["name", "mana_cost", "colors", "color_identity", "rarity", "price"]
 
         with open(card_data_file_name, mode="w", encoding="utf-8", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=fields)
@@ -54,7 +54,16 @@ def create_card_data_if_not_exists():
                 cards = data["data"]
 
                 for card in cards:
-                    writer.writerow({field: card.get(field, "") for field in fields})
+                    writer.writerow(
+                        {
+                            "name": card.get("name", ""),
+                            "mana_cost": mana_cost_to_value(card.get("mana_cost", "")),
+                            "colors": ",".join(card.get("colors", [])),
+                            "color_identity": ",".join(card.get("color_identity", [])),
+                            "rarity": card.get("rarity", ""),
+                            "price": float(card.get("prices", {}).get("usd") or 0),
+                        }
+                    )
 
                 next_url = data.get("next_page") if data.get("has_more") else None
 
@@ -112,15 +121,6 @@ def add_card_statistics_to_card_data():
         len(card_df) - num_wr_cols,
         "insignificant cards",
     )
-
-    # Remove percentage signs and convert to float
-    for col in card_wr_df.columns:
-        if card_wr_df[col].dtype == object:
-            card_wr_df[col] = card_wr_df[col].str.replace("%", "", regex=False)
-            try:
-                card_wr_df[col] = card_wr_df[col].astype(float)
-            except ValueError:
-                pass  # Skip columns that can't be converted
 
     card_wr_df["name"] = card_wr_df["name"].str.lower()
     card_df["name"] = card_df["name"].str.lower()

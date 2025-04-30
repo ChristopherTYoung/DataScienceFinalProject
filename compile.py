@@ -67,7 +67,14 @@ def compile_cards(
 def compile_draft(
     df: pd.DataFrame, card_data: pd.DataFrame, *, picks_per_pack: int = 5
 ) -> pd.DataFrame:
-    columns_to_add = ["name", "mana_cost", "color_identity", "rarity", "GIH WR"]
+    columns_to_add = [
+        "name",
+        "mana_cost",
+        "color_identity",
+        "rarity",
+        "GIH WR",
+        "price",
+    ]
     result_frames = []
     unique_packs = [0, 1, 2]
 
@@ -80,7 +87,7 @@ def compile_draft(
                 card_data,
                 columns_to_add,
                 row_idx,
-                columns_for_average=["GIH WR"],
+                columns_for_average=["GIH WR", "ATA", "GP WR", "GNS WR", "mana_cost"],
             )
             result_frames.append(cards_df)
 

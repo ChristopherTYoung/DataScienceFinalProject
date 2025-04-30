@@ -38,7 +38,6 @@ print("compacted draft data")
 stats_df = compile_all_drafts(draft_df, card_data_df)
 
 print(stats_df.head())
-print(draft_df.head())
 # ata_vs_mana_cost(card_data)
 # gns_vs_ata(card_data)
 
