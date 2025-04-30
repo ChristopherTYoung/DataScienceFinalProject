@@ -8,6 +8,7 @@ from file_creation import (
     create_draft_data_if_not_exists,
     create_card_data_if_not_exists,
 )
+from constants import card_data_file_name
 
 # Install requirements
 # pip install -r requirements.txt
@@ -18,7 +19,7 @@ create_card_data_if_not_exists()
 draft_data_columns_to_use = get_necessary_col_names_from_csv(draft_data_file_name)
 
 dirty_draft_df = read_draft_data(draft_data_columns_to_use)
-card_data = pd.read_csv("card_data.csv")
+card_data = pd.read_csv(card_data_file_name)
 
 draft_no_nulls_df = clean_nulls_care(dirty_draft_df, draft_data_columns_to_use)
 draft_duplicates_df = remove_incomplete(draft_no_nulls_df)
