@@ -4,6 +4,12 @@ from has_wheeled import has_wheeled
 from merge import add_card_data
 
 
+def parse_colors(value):
+    if pd.isna(value):
+        return set()
+    return set(map(str.strip, value.split(",")))
+
+
 # Only do the first 5
 def compile_cards(
     df: pd.DataFrame,  # accept by entire drafts
@@ -11,7 +17,7 @@ def compile_cards(
     columns_to_add: List[str],
     row: int,
     *,
-    columns_for_average: Optional[List[str]] = None
+    columns_for_average: Optional[List[str]] = None,
 ) -> pd.DataFrame:
     """
     Takes in the compact dataframe, a row index, and a list of values to use for averaging.
@@ -48,6 +54,31 @@ def compile_cards(
         for card_name in new_df.index
     ]
 
+    def count_overlaps(column_name):
+        parsed_colors = new_df[column_name].apply(parse_colors)
+
+        shared_counts = []
+        exact_counts = []
+
+        for idx, this_colors in parsed_colors.items():
+            shared = 0
+            exact = 0
+            for other_idx, other_colors in parsed_colors.items():
+                if idx == other_idx:
+                    continue
+                if this_colors & other_colors:
+                    shared += 1
+                if this_colors == other_colors:
+                    exact += 1
+            shared_counts.append(shared)
+            exact_counts.append(exact)
+
+        new_df[f"shared_{column_name}_count"] = shared_counts
+        new_df[f"exact_{column_name}_match_count"] = exact_counts
+
+    count_overlaps("colors")
+    count_overlaps("color_identity")
+
     if columns_for_average is not None:
         for new_row in new_df.index:
             packs_without = df["cards_in_pack"][row].copy()
@@ -71,6 +102,7 @@ def compile_draft(
         "name",
         "mana_cost",
         "color_identity",
+        "colors",
         "rarity",
         "GIH WR",
         "price",

@@ -122,10 +122,17 @@ def add_card_statistics_to_card_data():
         "insignificant cards",
     )
 
+    # Remove percentage signs and convert to float
+    for col in card_wr_df.columns:
+        if card_wr_df[col].dtype == object:
+            card_wr_df[col] = card_wr_df[col].str.replace("%", "", regex=False)
+            try:
+                card_wr_df[col] = card_wr_df[col].astype(float)
+            except ValueError:
+                pass  # Skip columns that can't be converted
+
     card_wr_df["name"] = card_wr_df["name"].str.lower()
     card_df["name"] = card_df["name"].str.lower()
-
-    card_df["mana_cost"] = card_df["mana_cost"].apply(mana_cost_to_value)
 
     merged_df = pd.merge(card_df, card_wr_df, on="name", how="left")
 
