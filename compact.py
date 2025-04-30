@@ -4,6 +4,7 @@ def compact(df):
     lambda row: sum([[col.replace('pack_card_', '')] * int(row[col]) for col in pack_card_cols if row[col] > 0], []),
     axis=1
     )
+    df = df.drop(columns = df.filter(like="pack_card_").columns)
     return df
 
 
