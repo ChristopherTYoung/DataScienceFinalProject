@@ -1,6 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from has_wheeled import has_wheeled
+import statsmodels.api as sm
 
 def avg_per_color(df):
     avg_per_color = df.groupby("color_identity")["pick_number"].mean()
@@ -38,3 +40,11 @@ def gns_vs_ata(card_data):
     plt.ylabel("Avg Pick #")
     plt.show()
 
+def logistic_regression_model(df, variables):
+    df = df.dropna(subset=["has_wheeled"]+variables)
+    X = df[variables].apply(pd.to_numeric, errors='coerce')
+    X = sm.add_constant(X)
+    y = pd.to_numeric(df["has_wheeled"])
+    model = sm.Logit(y, X)
+    result = model.fit()
+    return result

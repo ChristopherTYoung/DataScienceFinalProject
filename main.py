@@ -3,7 +3,7 @@ from compact import compact
 from file_reading import read_draft_data, get_necessary_col_names_from_csv
 from constants import draft_data_file_name
 from merge import add_card_data
-from models import ata_vs_mana_cost, win_rate_vs_ata, gns_vs_ata
+from models import ata_vs_mana_cost, win_rate_vs_ata, gns_vs_ata, logistic_regression_model
 from compile import compile_all_drafts
 import pandas as pd
 from file_creation import (
@@ -37,7 +37,9 @@ print("compacted draft data")
 
 stats_df = compile_all_drafts(draft_df, card_data_df)
 
-print(stats_df.head())
+print(stats_df.columns)
+model = logistic_regression_model(stats_df, ["GIH WR_avg", "GP WR_avg"])
+print(model.summary())
 # ata_vs_mana_cost(card_data)
 # gns_vs_ata(card_data)
 
