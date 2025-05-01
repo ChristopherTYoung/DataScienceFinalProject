@@ -106,6 +106,8 @@ def compile_draft(
         "rarity",
         "GIH WR",
         "price",
+        "ATA", 
+        "% GP"
     ]
     result_frames = []
     unique_packs = [0, 1, 2]

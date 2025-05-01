@@ -36,9 +36,11 @@ draft_df = compact(complex_draft_df)
 print("compacted draft data")
 
 stats_df = compile_all_drafts(draft_df, card_data_df)
-
+stats_df["rarity_numeric"] = stats_df["rarity"].map({"common": 1, "uncommon": 2, "rare": 3, "mythic": 4})
 print(stats_df.columns)
-model = logistic_regression_model(stats_df, ["GIH WR_avg", "GP WR_avg"])
+
+model = logistic_regression_model(stats_df, ["ATA", "shared_colors_count", "rarity_numeric", "ATA_avg", "pick_number"])
+# , "GP WR_avg", "shared_color_identity_count"
 print(model.summary())
 # ata_vs_mana_cost(card_data)
 # gns_vs_ata(card_data)
